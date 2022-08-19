@@ -7,11 +7,12 @@ services:
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-      POSTGRES_DATABASE_NAME: ${POSTGRES_DATABASE_NAME:-dockerdb}
       POSTGRES_SCHEMA: ${POSTGRES_SCHEMA:-public}
+      POSTGRES_DATABASE_NAME: ${POSTGRES_DATABASE_NAME:-dockerdb}
       PGDATA: /data/postgres
+      POSTGRES_HOST_AUTH_METHOD: trust
     volumes:
-      - ./init_db.sh:/docker-entrypoint-initdb.d/init_db.sh
+      - ./initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
       - postgres:/data/postgres
     ports:
       - "5432:5432"
@@ -29,6 +30,7 @@ services:
     volumes:
       - ./servers.json:/pgadmin4/servers.json
       - pgadmin:/var/lib/pgadmin
+      - ./pgpass:/pgpass
 
     ports:
       - "${PGADMIN_PORT:-5050}:80"

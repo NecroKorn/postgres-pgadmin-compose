@@ -14,6 +14,8 @@ Las variables de ntorno se encuentran en el archivo **.env**, el contenido es el
 * `POSTGRES_PASSWORD` el valor por defecto es **postgres**
 * `POSTGRES_DATABASE_NAME` el valor por defecto es **dockerdb**
 * `POSTGRES_SCHEMA` el valor por defecto es **public**
+* `POSTGRES_ANON` el valor por defecto es **web_anon**
+* `POSTGRES_AUTHENTICATOR` el valor por defecto es **authenticator**
 * `PGADMIN_PORT` el valor por defecto es is **5050**
 * `PGADMIN_DEFAULT_EMAIL` el valor por defecto es **pgadmin4@pgadmin.org**
 * `PGADMIN_DEFAULT_PASSWORD` el valor por defecto es **admin**
@@ -43,7 +45,7 @@ El archivo **servers.json** contiene la configuracion inicial de PgAdmin, la cua
 Los valores en el archivo **pgpass.conf** deben ser los mismos que estan definidos en el archivo **.env** y en el archivo **servers.json**
 * `hostname:port:database:username:password` los valores que debe modificar son los siguientes:
 * `hostname` =  **servers.json:Host**
-* `port` = **.env:PGADMIN_PORT**
+* `port` = **servers.json:Port**
 * `database` = **.env:POSTGRES_DATABASE_NAME**
 * `username` = **.env:POSTGRES_USER**
 * `password` = **.env:POSTGRES_PASSWORD**
@@ -51,7 +53,15 @@ Los valores en el archivo **pgpass.conf** deben ser los mismos que estan definid
 * ejemplo con los valores por defecto : `host.docker.internal:5050:dockerdb:postgres:postgres` 
 
 ## configuracion inicial de base de datos:
-El archivo **init_db.sh** contiene la configuracion inicial para la creacion de una base de datos, utilizar este archivo para definir la creacion de tablas u otros objetos necesarios
+El archivo **initdb.sql** contiene la configuracion inicial para la creacion de una base de datos, ademas en este archivo se pueden definir otros objetos como tablas u objetos necesarios
+
+En el archivo existen parametros que deben ser modificados a mano, si en el archivo .env son modificados, el detalle es el siguiente:
+* CREATE DATABASE `POSTGRES_DATABASE_NAME`;
+* GRANT ALL PRIVILEGES ON DATABASE `POSTGRES_DATABASE_NAME` TO `POSTGRES_USER`;
+* \connect `POSTGRES_DATABASE_NAME` `POSTGRES_USER`
+
+
+
 
 ## Logging
 
@@ -65,4 +75,4 @@ logging:
 ```
 
 ## Basado en el proyecto
-[referencia](https://github.com/khezen/compose-postgres/blob/master/README.md)
+[khezen/compose-postgres](https://github.com/khezen/compose-postgres/blob/master/README.md)
